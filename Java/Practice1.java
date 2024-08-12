@@ -8,11 +8,9 @@ public class Practice1 {
 			for (int j = 2; j < 10; j++) {
 
 				int count = j * i;
-
-				System.out.print(j + "*" + i + "= " + count + "\t");
+				System.out.printf("%d*%d=%2d ", j, i, count);
 			}
 			System.out.println();
 		}
 	}
-
 }

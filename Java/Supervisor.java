@@ -2,8 +2,7 @@ package com.cathaybk.practice.nt50331.b;
 
 public class Supervisor extends Employee {
 
-	// 屬性
-	private int payment;
+	private int payment;// 主管 薪水=月薪
 
 	// 建構子
 	public Supervisor(String name, String department, int salary) {

@@ -20,34 +20,25 @@ public class Practice4 {
 		for (Employee employee : emloyeeList) {
 			employee.printInfo();
 		}
-
-		try (
-
-				// 創建 BufferedWriter
-				BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
-						new FileOutputStream("C:\\Users\\Admin\\Desktop\\output.csv", true), "UTF-8"));
-
-		) {
-
+		// 因為沒有D槽，助教說隨意放
+		try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
+			new FileOutputStream("C:\\Users\\Admin\\Desktop\\output1.csv", true), "UTF-8"));) {
 			bw.write(new String(new byte[] { (byte) 0xEF, (byte) 0xBB, (byte) 0xBF }));
 
 			for (Employee employee : emloyeeList) {
+				int payment;
+				String name;
 				if (employee instanceof Supervisor) {
-					Supervisor employee1 = (Supervisor) employee;
-					String name = employee1.getName();
-					int payment = employee1.getPayment();
-
-					bw.write(name + "," + payment);
-					bw.newLine();
-
+					Supervisor supervisor = (Supervisor) employee;
+					name = supervisor.getName();
+					payment = supervisor.getPayment();
 				} else {
-					Sales employee1 = (Sales) employee;
-					String name = employee1.getName();
-					int payment = employee1.getPayment();
-
-					bw.write(name + "," + payment);
-					bw.newLine();
+					Sales sales = (Sales) employee;
+					name = sales.getName();
+					payment = sales.getPayment();
 				}
+				bw.write(name + "," + payment);
+				bw.newLine();
 			}
 			// 將緩衝資料寫入文件，同時清空緩衝區
 			bw.flush();

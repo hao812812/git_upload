@@ -1,41 +1,30 @@
 package com.cathaybk.practice.nt50331.b;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
 
 public class Practice2 {
 
 	public static void main(String[] args) {
-
-		ArrayList<Integer> list = new ArrayList<>();
-
-		// 隨機數放入list
-		for (int i = 0; i < 6; i++) {
-			int number = (int) (Math.random() * 49) + 1;
-			//若有相同數字則跳出for
-			if (list.contains(number)) {
-				continue;
-			}
-			list.add(number);
+		// 將1-49的數字放入numberlist中
+		ArrayList<Integer> numberList = new ArrayList<>();
+		for (int i = 1; i <= 49; i++) {
+			Integer allNumber = i;
+			numberList.add(allNumber);
 		}
+		// 將numberlist的數字隨機排列
+		Collections.shuffle(numberList);
 
-		// 印出排序前
-
-		System.out.print("排序前:");
-
-		for (int i = 0; i < list.size(); i++) {
-			System.out.print(list.get(i) + ", ");
+		// 取前6個尚未排序的隨機數字，並加入lottoSet中進行排序
+		System.out.print("排序前: ");
+		Set<Integer> lottoSet = new TreeSet<>();
+		for (int i = 1; i <= 6; i++) {
+			System.out.print(numberList.get(i) + " ");
+			lottoSet.add(numberList.get(i));
 		}
 		System.out.println();
-
-		// 排序後並印出
-		Collections.sort(list);
-
-		System.out.print("排序後:");
-
-		for (int i = 0; i < list.size(); i++) {
-			System.out.print(list.get(i) + ", ");
+		System.out.print("排序後: ");
+		for (Integer lottoSets : lottoSet) {
+			System.out.print(lottoSets + " ");
 		}
-
 	}
 }

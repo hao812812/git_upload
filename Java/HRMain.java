@@ -17,5 +17,4 @@ public class HRMain {
 			employee.printInfo();
 		}
 	}
-
 }

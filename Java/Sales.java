@@ -1,10 +1,10 @@
 package com.cathaybk.practice.nt50331.b;
 
 public class Sales extends Employee {
-	// 屬性
-	private int bouns;
-	public int peformance;
-	private int payment;
+
+	private int bouns; // 業績獎金
+	public int peformance;// 業績
+	private int payment;// 薪水
 
 	// 建構子
 	public Sales(String name, String department, int payment, int performance) {
