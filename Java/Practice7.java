@@ -23,10 +23,14 @@ public class Practice7 {
 
 	public static final String CONN_URL = "jdbc:oracle:thin:@//localhost:1521/XE";
 
-	public static void main(String[] args) {
+	public static final String ACCOUNT = "student";
 
-		// doQuery();
-		 doMethod();
+	public static final String PASSWORD = "student123456";
+
+	public static void main(String[] args) {
+		
+		 //doQuery();
+		doMethod();
 
 	}
 
@@ -36,13 +40,13 @@ public class Practice7 {
 		Scanner sc = new Scanner(System.in);
 		String order = sc.next();
 
-		if (order.equals("insert")) {
+		if ("insert".equals(order)) {
 			insert();
-		} else if (order.equals("select")) {
+		} else if ("select".equals(order)) {
 			select();
-		} else if (order.equals("update")) {
+		} else if ("update".equals(order)) {
 			update();
-		} else if (order.equals("delete")) {
+		} else if ("delete".equals(order)) {
 			delete();
 		} else {
 			System.out.println("指令輸入錯誤!");
@@ -50,13 +54,15 @@ public class Practice7 {
 		sc.close();
 	}
 
+//insert into STUDENT.CARS (MANUFACTURER, TYPE, MIN_PRICE, PRICE) values (?, ?, ?, ?)
 	public static void insert() {
 
-		try (Connection conn = DriverManager.getConnection(CONN_URL, "student", "student123456")) {
-			try {
-				PreparedStatement pstmt = conn.prepareStatement(INSERT_CARS_SQL);
-				conn.setAutoCommit(false);
+		try (Connection conn = DriverManager.getConnection(CONN_URL, ACCOUNT, PASSWORD);
 				Scanner sc = new Scanner(System.in);
+				PreparedStatement pstmt = conn.prepareStatement(INSERT_CARS_SQL);) {
+			try {
+				conn.setAutoCommit(false);
+
 				System.out.println("請輸入製造商:");
 				String manufacture = sc.next();
 				System.out.println("請輸入型號:");
@@ -70,31 +76,25 @@ public class Practice7 {
 				pstmt.setString(3, minPrice);
 				pstmt.setString(4, price);
 				pstmt.executeUpdate();
-
 				conn.commit();
 				System.out.println("新增成功");
-				sc.close();
+
 			} catch (Exception e) {
 				System.out.println("新增失敗，原因：" + e.getMessage());
+				conn.rollback();
 
-				try {
-					// 進行rollback回復
-					conn.rollback();
-				} catch (SQLException e1) {
-
-					System.out.println("rollback 失敗，原因：" + e1.getMessage());
-				}
 			}
 		} catch (SQLException e) {
 			System.out.println("失敗，原因：" + e.getMessage());
 		}
 	}
 
+//select MANUFACTURER,TYPE,MIN_PRICE,PRICE from STUDENT.CARS where MANUFACTURER=? and TYPE=?
 	public static void select() {
-		try (Connection conn = DriverManager.getConnection(CONN_URL, "student", "student123456")) {
+		try (Connection conn = DriverManager.getConnection(CONN_URL, ACCOUNT, PASSWORD);
+				Scanner sc = new Scanner(System.in);
+				PreparedStatement pstmt = conn.prepareStatement(QUERY_CARS_SQL);) {
 
-			PreparedStatement pstmt = conn.prepareStatement(QUERY_CARS_SQL);
-			Scanner sc = new Scanner(System.in);
 			System.out.println("請輸入製造商:");
 			String manufacture = sc.next();
 			System.out.println("請輸入型號:");
@@ -115,20 +115,21 @@ public class Practice7 {
 						.append("底價：").append(rs.getString("MIN_PRICE") + "\n");
 			}
 			System.out.println(sb.toString());
-			sc.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 	}
 
+//update STUDENT.CARS set MIN_PRICE=?,PRICE=? where MANUFACTURER=? and TYPE=?
 	public static void update() {
-		try (Connection conn = DriverManager.getConnection(CONN_URL, "student", "student123456")) {
+		try (Connection conn = DriverManager.getConnection(CONN_URL, ACCOUNT, PASSWORD);
+				Scanner sc = new Scanner(System.in);
+				PreparedStatement pstmt = conn.prepareStatement(UPDATE_CARS_SQL);) {
 			try {
-				PreparedStatement pstmt = conn.prepareStatement(UPDATE_CARS_SQL);
+
 				conn.setAutoCommit(false);
 
-				Scanner sc = new Scanner(System.in);
 				System.out.println("請輸入製造商:");
 				String manufacture = sc.next();
 				System.out.println("請輸入型號:");
@@ -142,22 +143,14 @@ public class Practice7 {
 				pstmt.setString(2, price);
 				pstmt.setString(3, manufacture);
 				pstmt.setString(4, type);
+				pstmt.executeQuery(); // 執行SQL指令
 
-				// ResultSet物件儲存查詢結果
-				ResultSet rs = pstmt.executeQuery();
 				conn.commit();
 				System.out.println("更改成功");
-				sc.close();
-				rs.close();
+
 			} catch (Exception e) {
 				System.out.println("新增失敗，原因：" + e.getMessage());
-				try {
-					// 進行rollback回復
-					conn.rollback();
-				} catch (SQLException e1) {
-
-					System.out.println("rollback 失敗，原因：" + e1.getMessage());
-				}
+				conn.rollback();
 			}
 
 		} catch (SQLException e) {
@@ -165,12 +158,14 @@ public class Practice7 {
 		}
 	}
 
+	// delete from STUDENT.CARS where MANUFACTURER=? and TYPE=?
 	public static void delete() {
-		try (Connection conn = DriverManager.getConnection(CONN_URL, "student", "student123456")) {
-			try {
-				PreparedStatement pstmt = conn.prepareStatement(DELETE_CARS_SQL);
-				conn.setAutoCommit(false);
+		try (Connection conn = DriverManager.getConnection(CONN_URL, ACCOUNT, PASSWORD);
 				Scanner sc = new Scanner(System.in);
+				PreparedStatement pstmt = conn.prepareStatement(DELETE_CARS_SQL);) {
+			try {
+
+				conn.setAutoCommit(false);
 				System.out.println("請輸入要刪除的製造商:");
 				String manufacture = sc.next();
 				System.out.println("請輸入要刪除的型號:");
@@ -181,18 +176,12 @@ public class Practice7 {
 				pstmt.executeUpdate();
 				System.out.println("刪除一筆資料成功");
 				conn.commit();
-				sc.close();
 
 			} catch (Exception e) {
 				e.printStackTrace();
-			}
-			try {
-				// 進行rollback回復
 				conn.rollback();
-			} catch (SQLException e) {
-
-				System.out.println("rollback 失敗，原因：" + e.getMessage());
 			}
+
 		} catch (SQLException e1) {
 			System.out.println("失敗，原因：" + e1.getMessage());
 		}
@@ -202,9 +191,8 @@ public class Practice7 {
 		List<Map<String, String>> carList = new ArrayList<Map<String, String>>();
 		Map<String, String> carMap = new HashMap<String, String>();
 
-		try (Connection conn = DriverManager.getConnection(CONN_URL, "student", "student123456");) {
-
-			PreparedStatement pstmt = conn.prepareStatement("select * from STUDENT.CARS");
+		try (Connection conn = DriverManager.getConnection(CONN_URL, ACCOUNT, PASSWORD);
+				PreparedStatement pstmt = conn.prepareStatement("select * from STUDENT.CARS");) {
 
 			// ResultSet物件儲存查詢結果
 			ResultSet rs = pstmt.executeQuery();
@@ -215,7 +203,6 @@ public class Practice7 {
 				carMap.put("TYPE", rs.getString("TYPE"));
 				carMap.put("PRICE", rs.getString("PRICE"));
 				carMap.put("MIN_PRICE", rs.getString("MIN_PRICE"));
-
 				carList.add(carMap);
 				System.out.println(carList.get(0));
 			}
