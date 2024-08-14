@@ -1,5 +1,8 @@
 package com.cathaybk.practice.nt50331.b;
 
+/**
+ * java評量第五題之主管資料
+ */
 public class Supervisor extends Employee {
 
 	private int payment;// 主管 薪水=月薪

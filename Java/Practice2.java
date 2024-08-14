@@ -2,6 +2,9 @@ package com.cathaybk.practice.nt50331.b;
 
 import java.util.*;
 
+/**
+ * java評量第二題
+ */
 public class Practice2 {
 
 	public static void main(String[] args) {

@@ -11,51 +11,61 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+/**
+ * java評量第七題
+ */
+
 public class Practice7 {
 
-	public static final String QUERY_CARS_SQL = "select MANUFACTURER,TYPE,MIN_PRICE,PRICE from STUDENT.CARS where MANUFACTURER=? and TYPE=?";
+	private static final String QUERY_CARS_SQL = "select MANUFACTURER,TYPE,MIN_PRICE,PRICE from STUDENT.CARS where MANUFACTURER=? and TYPE=?";
 
-	public static final String UPDATE_CARS_SQL = "update STUDENT.CARS set MIN_PRICE=?,PRICE=? where MANUFACTURER=? and TYPE=?";
+	private static final String UPDATE_CARS_SQL = "update STUDENT.CARS set MIN_PRICE=?,PRICE=? where MANUFACTURER=? and TYPE=?";
 
-	public static final String DELETE_CARS_SQL = "delete from STUDENT.CARS where MANUFACTURER=? and TYPE=?";
+	private static final String DELETE_CARS_SQL = "delete from STUDENT.CARS where MANUFACTURER=? and TYPE=?";
 
-	public static final String INSERT_CARS_SQL = "insert into STUDENT.CARS (MANUFACTURER, TYPE, MIN_PRICE, PRICE) values (?, ?, ?, ?)";
+	private static final String INSERT_CARS_SQL = "insert into STUDENT.CARS (MANUFACTURER, TYPE, MIN_PRICE, PRICE) values (?, ?, ?, ?)";
 
-	public static final String CONN_URL = "jdbc:oracle:thin:@//localhost:1521/XE";
+	private static final String CONN_URL = "jdbc:oracle:thin:@//localhost:1521/XE";
 
-	public static final String ACCOUNT = "student";
+	private static final String ACCOUNT = "student";
 
-	public static final String PASSWORD = "student123456";
+	private static final String PASSWORD = "student123456";
 
 	public static void main(String[] args) {
-		
-		 //doQuery();
+
+		doQuery();
 		doMethod();
 
 	}
 
-	public static void doMethod() {
+	private static void doMethod() {
 
 		System.out.println("請選擇以下指令輸入:select、insert、update、delete");
 		Scanner sc = new Scanner(System.in);
 		String order = sc.next();
 
-		if ("insert".equals(order)) {
-			insert();
-		} else if ("select".equals(order)) {
-			select();
-		} else if ("update".equals(order)) {
-			update();
-		} else if ("delete".equals(order)) {
-			delete();
-		} else {
-			System.out.println("指令輸入錯誤!");
+		switch (order) {
+			case "insert":
+				insert();
+				break;
+			case "select":
+				select();
+				break;
+			case "update":
+				update();
+				break;
+			case "delete":
+				delete();
+				break;
+			default:
+				System.out.println("指令輸入錯誤!");
 		}
+
 		sc.close();
 	}
 
 //insert into STUDENT.CARS (MANUFACTURER, TYPE, MIN_PRICE, PRICE) values (?, ?, ?, ?)
-	public static void insert() {
+	private static void insert() {
 
 		try (Connection conn = DriverManager.getConnection(CONN_URL, ACCOUNT, PASSWORD);
 				Scanner sc = new Scanner(System.in);
@@ -90,7 +100,7 @@ public class Practice7 {
 	}
 
 //select MANUFACTURER,TYPE,MIN_PRICE,PRICE from STUDENT.CARS where MANUFACTURER=? and TYPE=?
-	public static void select() {
+	private static void select() {
 		try (Connection conn = DriverManager.getConnection(CONN_URL, ACCOUNT, PASSWORD);
 				Scanner sc = new Scanner(System.in);
 				PreparedStatement pstmt = conn.prepareStatement(QUERY_CARS_SQL);) {
@@ -122,7 +132,7 @@ public class Practice7 {
 	}
 
 //update STUDENT.CARS set MIN_PRICE=?,PRICE=? where MANUFACTURER=? and TYPE=?
-	public static void update() {
+	private static void update() {
 		try (Connection conn = DriverManager.getConnection(CONN_URL, ACCOUNT, PASSWORD);
 				Scanner sc = new Scanner(System.in);
 				PreparedStatement pstmt = conn.prepareStatement(UPDATE_CARS_SQL);) {
@@ -143,10 +153,17 @@ public class Practice7 {
 				pstmt.setString(2, price);
 				pstmt.setString(3, manufacture);
 				pstmt.setString(4, type);
-				pstmt.executeQuery(); // 執行SQL指令
 
+				int result = pstmt.executeUpdate(); // 執行SQL指令
+
+				// 檢查是否有新增成功
+				if (result >= 1) {
+					System.out.println("更改成功");
+
+				} else {
+					System.out.println("更改失敗");
+				}
 				conn.commit();
-				System.out.println("更改成功");
 
 			} catch (Exception e) {
 				System.out.println("新增失敗，原因：" + e.getMessage());
@@ -159,7 +176,7 @@ public class Practice7 {
 	}
 
 	// delete from STUDENT.CARS where MANUFACTURER=? and TYPE=?
-	public static void delete() {
+	private static void delete() {
 		try (Connection conn = DriverManager.getConnection(CONN_URL, ACCOUNT, PASSWORD);
 				Scanner sc = new Scanner(System.in);
 				PreparedStatement pstmt = conn.prepareStatement(DELETE_CARS_SQL);) {
@@ -173,8 +190,14 @@ public class Practice7 {
 
 				pstmt.setString(1, manufacture);
 				pstmt.setString(2, type);
-				pstmt.executeUpdate();
-				System.out.println("刪除一筆資料成功");
+				// 執行SQL delete語句
+				int result = pstmt.executeUpdate();
+				// 判斷是否刪除成功
+				if (result >= 1) {
+					System.out.println("刪除一筆資料成功");
+				} else {
+					System.out.println("刪除失敗!");
+				}
 				conn.commit();
 
 			} catch (Exception e) {
@@ -187,7 +210,7 @@ public class Practice7 {
 		}
 	}
 
-	public static void doQuery() {
+	private static void doQuery() {
 		List<Map<String, String>> carList = new ArrayList<Map<String, String>>();
 		Map<String, String> carMap = new HashMap<String, String>();
 

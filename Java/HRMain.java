@@ -3,6 +3,9 @@ package com.cathaybk.practice.nt50331.b;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * java評量第五題之新增員工並顯示出資訊
+ */
 public class HRMain {
 
 	public static void main(String[] args) {

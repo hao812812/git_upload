@@ -1,5 +1,8 @@
 package com.cathaybk.practice.nt50331.b;
 
+/**
+ * java評量第五題之銷售人員
+ */
 public class Sales extends Employee {
 
 	private int bouns; // 業績獎金

@@ -3,6 +3,9 @@ package com.cathaybk.practice.nt50331.b;
 import java.time.LocalDate;
 import java.util.*;
 
+/**
+ * java評量第五題
+ */
 public class Practice5 {
 
 	public static void main(String[] args) {

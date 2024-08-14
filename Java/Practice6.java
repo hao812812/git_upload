@@ -14,42 +14,44 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import java.util.TreeSet;
 
+/**
+ * java評量第六題
+ */
 public class Practice6 {
 
 	public static void main(String[] args) {
-		try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("C:\\Users\\Admin\\Desktop\\cars2.csv", true), "UTF-8"));// 檔案匯出
-			InputStreamReader isr = new InputStreamReader(new FileInputStream("C:\\Users\\Admin\\Desktop\\cars.csv"));// 檔案讀取路徑
-			BufferedReader reader = new BufferedReader(isr);
-			){
-			
-			
+		try (BufferedWriter bw = new BufferedWriter(
+				new OutputStreamWriter(new FileOutputStream("C:\\Users\\Admin\\Desktop\\cars2.csv", true), "UTF-8")); // 檔案匯出
+				InputStreamReader isr = new InputStreamReader(
+						new FileInputStream("C:\\Users\\Admin\\Desktop\\cars.csv")); // 檔案讀取路徑
+				BufferedReader reader = new BufferedReader(isr);) {
+
 			// 第6-1
 			String line = null;
 
 			List<Map<String, String>> carsList = new ArrayList<>();
-			line = reader.readLine();
+
+			// 把cars.csv的 title放進titleArray中
+			String[] titleArray = reader.readLine().split(",");
+
+			// 把cars.csv檔案每列資料拉出
 			while ((line = reader.readLine()) != null) {
-				String item[] = line.split(",");
 
-				
-				String manufacturer = item[0].trim();// trim()把資料中的空格修掉
-				String type = item[1].trim();
-				String minPrice = item[2].trim();
-				String price = item[3].trim();
-
-				// 存入Map
+				// 建立Map
 				Map<String, String> carsMap = new HashMap<>();
-				carsMap.put("Manufacturer", manufacturer);
-				carsMap.put("Type", type);
 
-				carsMap.put("Min.Price", minPrice);
-				carsMap.put("Price", price);
+				String item[] = line.split(",");
+				// 存入carsMap中
+				for (int i = 0; i < titleArray.length; i++) {
 
-				// 存入Map資料存入list
+					carsMap.put(titleArray[i], item[i].trim());
+				}
+
+				// carsMap資料存入list
 				carsList.add(carsMap);
-
 			}
 
 			// 進行price大小的排序
@@ -59,45 +61,44 @@ public class Practice6 {
 
 					BigDecimal priceBig = new BigDecimal(carsMap.get("Price"));
 					BigDecimal priceSmall = new BigDecimal(compareCarsMap.get("Price"));
-					return priceSmall.compareTo(priceBig);
+					return priceSmall.compareTo(priceBig);// 回傳小於0
 				}
 			});
-			
-			
+
 			// 製作ManufacturerSet，並把carsList中所有製造商名丟入set
 			Set<String> ManufacturerSet = new TreeSet<>();
-			for (Map<String,String> carsSet : carsList) {
-				ManufacturerSet.add(carsSet.get("Manufacturer"));
+			for (Map<String, String> carsSet : carsList) {
+				ManufacturerSet.add(carsSet.get(titleArray[0]));
 			}
 
 			// 寫入到cars2
-			Map<String, String> multiMap = new HashMap<>();
-			multiMap.put("Manufacturer", "Manufacturer");
-			multiMap.put("Type", "Type");
-			multiMap.put("Min.Price", "Min.Price");
-			multiMap.put("Price", "Price");
+			Map<String, String> multiMap = new HashMap<>();// 寫入title
+			multiMap.put("Manufacturer", titleArray[0]);
+			multiMap.put("Type", titleArray[1]);
+			multiMap.put("Min.Price", titleArray[2]);
+			multiMap.put("Price", titleArray[3]);
 			carsList.add(0, multiMap);
-			
+
 			for (Map<String, String> listCars : carsList) {
 				bw.write(listCars.get("Manufacturer") + "," + listCars.get("Type") + "," + listCars.get("Min.Price")
 						+ "," + listCars.get("Price"));
 				bw.newLine();
 			}
-			
+
 			// 第6-2
 			System.out.printf("%-14s%-8s%8s%7s", "Manufacturer", "Type", "Min.Price", "Price");
 			System.out.println();
-			BigDecimal sumPrice = new BigDecimal("0");
-			BigDecimal sumMinPrice = new BigDecimal("0");
+			BigDecimal sumPrice = BigDecimal.ZERO;
+			BigDecimal sumMinPrice = BigDecimal.ZERO;
 
 			for (String Manufacturer : ManufacturerSet) {// 抓set的廠商名
 
-				BigDecimal totalPrice = new BigDecimal("0");
-				BigDecimal totalMinPrice = new BigDecimal("0");
+				BigDecimal totalPrice = BigDecimal.ZERO;
+				BigDecimal totalMinPrice = BigDecimal.ZERO;
 
 				for (Map<String, String> listMan : carsList) {// 抓list的廠商名
 
-					if (listMan.get("Manufacturer").equals(Manufacturer)) {
+					if (listMan.get(titleArray[0]).equals(Manufacturer)) {
 
 						System.out.printf("%-14s%-8s%8s%7s", Manufacturer, listMan.get("Type"),
 								listMan.get("Min.Price"), listMan.get("Price"));
@@ -122,7 +123,7 @@ public class Practice6 {
 
 			// 將緩衝資料寫入文件，同時清空緩衝區
 			bw.flush();
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

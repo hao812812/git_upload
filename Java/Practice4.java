@@ -6,6 +6,9 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * java評量第四題
+ */
 public class Practice4 {
 
 	public static void main(String[] args) {
@@ -22,7 +25,7 @@ public class Practice4 {
 		}
 		// 因為沒有D槽，助教說隨意放
 		try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
-			new FileOutputStream("C:\\Users\\Admin\\Desktop\\output1.csv", true), "UTF-8"));) {
+				new FileOutputStream("C:\\Users\\Admin\\Desktop\\output1.csv", true), "UTF-8"));) {
 			bw.write(new String(new byte[] { (byte) 0xEF, (byte) 0xBB, (byte) 0xBF }));
 
 			for (Employee employee : emloyeeList) {
