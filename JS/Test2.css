@@ -1,0 +1,19 @@
+#inputTable {
+    width: 500px;
+    height: 150px;
+    
+    text-align: center; /*button置中*/
+    
+   
+  }
+
+#resultTable {
+    margin-top: 20px;
+    width: 500px;
+    height: 100px;
+    text-align: center; /*button置中*/
+    
+    
+    
+   
+  }

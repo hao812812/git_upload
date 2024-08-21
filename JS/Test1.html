@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <script type="text/javascript" src="HashMap.js"></script>
+  <script type="text/javascript">
+
+    window.onload = function () {
+
+      const map = new HashMap();
+
+      const putButton = document.getElementById('put');
+
+      const clearButton = document.getElementById('clear');
+
+
+      //按下PUT button
+      putButton.addEventListener('click', function () {
+
+        const key = document.getElementById('key').value;
+        const value = document.getElementById('value').value;
+        const resultId = document.getElementById('result')
+
+        //判斷不能為空 且 key不重複
+        if (key === "" || map.contains(key)) {
+          alert("key值不可為空或重複輸入!!")
+
+        } else {
+
+          //put and get
+          map.put(key, value);
+
+          const results = document.createElement('span');
+          results.innerHTML = `${key} : ${map.get(key)}<br>`
+          resultId.appendChild(results);//顯key:value
+
+        }
+      })
+
+      //按下CLEAR button
+      clearButton.addEventListener('click', function () {
+        const resultId = document.getElementById('result')
+        map.clear();
+
+        //清空子節點
+        while (resultId.firstChild) {
+          resultId.removeChild(resultId.firstChild)
+        }
+
+      })
+
+    }
+
+
+  </script>
+</head>
+
+<body>
+  <div>
+    <span style="display: inline-block; margin-bottom: 10px;"> KEY　 　&nbsp</span><input id="key" type="text" /><br>
+
+    <span> VALUE　 </span><input id="value" type="text" /><br>
+
+    <hr style="margin-top: 20px;">
+    <div style="margin-top: 20px;">
+      <button id="put" style="margin-left: 10px;">PUT</button>
+      <button id="clear" style="margin-left: 15px;">CLEAR</button>
+    </div>
+    <hr style="margin-top: 20px;">
+
+    <!--result結果-->
+    <p>【RESULT】</p>
+    <div id="result" style="margin-left:30px;">
+
+    </div>
+
+  </div>
+</body>
+
+</html>

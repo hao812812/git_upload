@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="Test2.css">
+  <title>Document</title>
+  <script type="text/javascript">
+
+    window.onload = function () {
+
+      const newButton = document.getElementById('newButton');
+      const clearButton = document.getElementById('clearButton');
+      const resultTable = document.getElementById('resultTable'); //資料區域
+      let id = 0;
+      let row = null; // 用來追蹤要修改的行
+
+      //按下新增 button
+      newButton.addEventListener('click', function () {
+
+        const manufacture = document.getElementById('manufacture');
+        const category = document.getElementById('category');
+        const lowPrice = document.getElementById('lowPrice');
+        const price = document.getElementById('price');
+
+        //判斷製造商、類別不能為空 
+        if (manufacture.value === "" || category.value === "") {
+          alert("製造商、類別不可空白 !!")
+        } else {
+          //新增資料
+          while (true) {
+            id += 1;
+            break;
+          }
+          const tr = document.createElement('tr');
+          tr.innerHTML =
+            `
+                <tr id="tr${id}">
+                <th><input type="radio" name="radio" class="radio" id="radio${id}"></th>
+                <th>${id}</th>
+                <th>${manufacture.value}</th>
+                <th>${category.value}</th>
+                <th>${lowPrice.value}</th>
+                <th>${price.value}</th>
+                <th><button class="deleteButton "id="deleteButton${id}">刪除</button></th>
+                </tr>
+            `;
+          resultTable.appendChild(tr);
+        }
+      })
+
+      /*事件委派:在table下掛監聽器，可監聽整個table中的元素*/
+
+      //按下刪除 button
+      resultTable.addEventListener('click', function (event) {
+        let target = event.target;
+        if (target.classList.contains('deleteButton')) {
+          target.parentElement.parentElement.remove();
+          updateId();
+        }
+
+      });
+
+      // radio按鈕
+      resultTable.addEventListener('click', function (event) {
+        let target = event.target;
+        row = target.parentElement.parentElement;
+        if (target.classList.contains('radio')) {
+
+          document.getElementById('manufacture').value = row.children[2].innerText;
+          document.getElementById('category').value = row.children[3].innerText;
+          document.getElementById('lowPrice').value = row.children[4].innerText;
+          document.getElementById('price').value = row.children[5].innerText;
+        }
+
+
+      });
+
+      //按下修改button
+      const updateButton = document.getElementById('updateButton');
+
+      updateButton.addEventListener('click', function () {
+
+        if (manufacture.value === "" || category.value === "") {
+          alert("製造商與類別不可空白!");
+        } else {
+          row.children[2].innerText = manufacture.value;
+          row.children[3].innerText = category.value;
+          row.children[4].innerText = lowPrice.value;
+          row.children[5].innerText = price.value;
+        }
+      })
+
+
+      //按下清空 button !清空後續號需要重新計算
+      clearButton.addEventListener('click', function () {
+
+        //清空子節點
+        while (resultTable.children.length > 1) { //子節點index 1->表頭
+          resultTable.removeChild(resultTable.lastChild)
+        }
+        id = 0; //序號重新計算
+      })
+
+
+      function updateId() {
+        let serial = resultTable.getElementsByTagName('tr');
+
+        for (let i = 1; i <= serial.length - 1; i++) {//serial[0]為表頭
+          serial[i].children[1].innerText = i; //抓到<th>[1]中的id
+        }
+        id = serial.length - 1; //目前刪完後剩幾列
+      }
+    }
+
+
+  </script>
+</head>
+
+<body>
+  <table id="inputTable" border="1" style="border-collapse:collapse;">
+    <tr>
+      <th>製造商</th>
+      <th><input type="text" id="manufacture"></div>
+      </th>
+      <th>類別</th>
+      <th><input type="text" id="category"></th>
+    </tr>
+
+    <tr>
+      <th>底價</th>
+      <th><input type="text" id="lowPrice"></th>
+      <th>售價</th>
+      <th><input type="text" id="price"></th>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <button id="newButton">新增</button>
+        <button id="updateButton">修改</button>
+        <button id="clearButton">清空</button>
+      </td>
+
+    </tr>
+
+  </table>
+
+  <table id="resultTable" border="1" style="border-collapse:collapse;">
+    <tr>
+      <th></th>
+      <th>序號</th>
+      <th>製造商</th>
+      <th>類別</th>
+      <th>底價</th>
+      <th>售價</th>
+      <th></th>
+    </tr>
+  </table>
+
+</body>
+
+</html>
