@@ -41,61 +41,60 @@
                     alert('請在售價欄位中輸入數字!!');
                     return;
 
-                } else {
-
-                    //新增資料
-
-                    id += 1;
-
-                    //<tr> 、radio創建
-                    const tr = document.createElement('tr');
-                    const radioTd = document.createElement('td');
-                    const radioInput = document.createElement('input');
-                    //設定屬性
-                    radioInput.setAttribute('type', 'radio');
-                    radioInput.setAttribute('name', 'radio');
-                    radioInput.setAttribute('class', 'radio');
-
-                    //創造 5個 欄位標籤並加入值
-                    const idTd = document.createElement('td');
-                    idTd.innerText = id;
-
-                    const manufactureTd = document.createElement('td');
-                    manufactureTd.innerText = manufacture.value;
-
-                    const categoryTd = document.createElement('td');
-                    categoryTd.innerText = category.value;
-
-                    const lowPriceTd = document.createElement('td');
-                    lowPriceTd.innerText = lowPrice.value;
-
-                    const priceTd = document.createElement('td')
-                    priceTd.innerText = price.value;
-
-                    //刪除按鈕創建
-                    const deleteTd = document.createElement('td');
-                    const deleteButton = document.createElement('button');
-
-                    deleteButton.setAttribute('class', 'deleteButton');
-                    deleteButton.innerText = '刪除';
-
-                    //開始加入節點
-                    radioTd.appendChild(radioInput);
-                    deleteTd.appendChild(deleteButton);
-
-                    tr.appendChild(radioTd);
-                    tr.appendChild(idTd);
-                    tr.appendChild(manufactureTd);
-                    tr.appendChild(categoryTd);
-                    tr.appendChild(lowPriceTd);
-                    tr.appendChild(priceTd);
-                    tr.appendChild(deleteTd);
-
-                    resultTable.appendChild(tr);
-
                 }
 
-            })
+                //新增資料
+
+                id += 1;
+
+                //<tr> 、radio創建
+                const tr = document.createElement('tr');
+                const radioTd = document.createElement('td');
+                const radioInput = document.createElement('input');
+                //設定屬性
+                radioInput.setAttribute('type', 'radio');
+                radioInput.setAttribute('name', 'radio');
+                radioInput.setAttribute('class', 'radio');
+
+                //創造 5個 欄位標籤並加入值
+                const idTd = document.createElement('td');
+                idTd.innerText = id;
+
+                const manufactureTd = document.createElement('td');
+                manufactureTd.innerText = manufacture.value;
+
+                const categoryTd = document.createElement('td');
+                categoryTd.innerText = category.value;
+
+                const lowPriceTd = document.createElement('td');
+                lowPriceTd.innerText = lowPrice.value;
+
+                const priceTd = document.createElement('td')
+                priceTd.innerText = price.value;
+
+                //刪除按鈕創建
+                const deleteTd = document.createElement('td');
+                const deleteButton = document.createElement('button');
+
+                deleteButton.setAttribute('class', 'deleteButton');
+                deleteButton.innerText = '刪除';
+
+                //開始加入節點
+                radioTd.appendChild(radioInput);
+                deleteTd.appendChild(deleteButton);
+
+                tr.appendChild(radioTd);
+                tr.appendChild(idTd);
+                tr.appendChild(manufactureTd);
+                tr.appendChild(categoryTd);
+                tr.appendChild(lowPriceTd);
+                tr.appendChild(priceTd);
+                tr.appendChild(deleteTd);
+
+                resultTable.appendChild(tr);
+
+            }
+            )
 
             /*事件委派:在table下掛監聽器，可監聽整個table中的元素*/
 
@@ -153,16 +152,14 @@
                     alert('請在售價欄位中輸入數字!!');
                     return;
 
-                } else {
-
-                    row.children[2].innerText = manufacture.value;
-                    row.children[3].innerText = category.value;
-                    row.children[4].innerText = lowPrice.value;
-                    row.children[5].innerText = price.value;
                 }
-            }
 
-            );
+                row.children[2].innerText = manufacture.value;
+                row.children[3].innerText = category.value;
+                row.children[4].innerText = lowPrice.value;
+                row.children[5].innerText = price.value;
+
+            });
 
 
             //按下清空 button !清空後續號需要重新計算 *欄位都清除
