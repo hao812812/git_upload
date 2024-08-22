@@ -2,160 +2,240 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="Test2.css">
-  <title>Document</title>
-  <script type="text/javascript">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Test2.css">
+    <title>Document</title>
+    <script type="text/javascript">
 
-    window.onload = function () {
+        window.onload = function () {
 
-      const newButton = document.getElementById('newButton');
-      const clearButton = document.getElementById('clearButton');
-      const resultTable = document.getElementById('resultTable'); //資料區域
-      let id = 0;
-      let row = null; // 用來追蹤要修改的行
+            const newButton = document.getElementById('newButton');
+            const clearButton = document.getElementById('clearButton');
+            const resultTable = document.getElementById('resultTable'); //資料區域
+            let id = 0;
+            let row = null; // 用來追蹤要修改的行
 
-      //按下新增 button
-      newButton.addEventListener('click', function () {
+            //按下新增 button
+            newButton.addEventListener('click', function () {
 
-        const manufacture = document.getElementById('manufacture');
-        const category = document.getElementById('category');
-        const lowPrice = document.getElementById('lowPrice');
-        const price = document.getElementById('price');
+                const manufacture = document.getElementById('manufacture');
+                const category = document.getElementById('category');
+                const lowPrice = document.getElementById('lowPrice');
+                const price = document.getElementById('price');
 
-        //判斷製造商、類別不能為空 
-        if (manufacture.value === "" || category.value === "") {
-          alert("製造商、類別不可空白 !!")
-        } else {
-          //新增資料
-          while (true) {
-            id += 1;
-            break;
-          }
-          const tr = document.createElement('tr');
-          tr.innerHTML =
-            `
-                <tr id="tr${id}">
-                <th><input type="radio" name="radio" class="radio" id="radio${id}"></th>
-                <th>${id}</th>
-                <th>${manufacture.value}</th>
-                <th>${category.value}</th>
-                <th>${lowPrice.value}</th>
-                <th>${price.value}</th>
-                <th><button class="deleteButton "id="deleteButton${id}">刪除</button></th>
-                </tr>
-            `;
-          resultTable.appendChild(tr);
+                //判斷製造商、類別不能為空 
+                if (!(manufacture.value.trim())) {
+
+                    return alert("製造商不可空白 !!")
+
+                } else if (!(category.value.trim())) {
+
+                    return alert("類別不可空白 !!")
+
+                } else if (isNaN(Number(lowPrice.value))) {
+
+                    return alert("請在底價欄位中輸入數字!!")
+
+                } else if (isNaN(Number(price.value))) {
+
+                    return alert("請在售價欄位中輸入數字!!")
+
+                } else {
+
+                    //新增資料
+            
+                    id += 1;
+
+                    //<tr> 、radio創建
+                    const tr = document.createElement('tr');
+                    const radioTd = document.createElement('td');
+                    const radioInput = document.createElement('input');
+                    //設定屬性
+                    radioInput.setAttribute('type', "radio");
+                    radioInput.setAttribute('name', "radio");
+                    radioInput.setAttribute('class', "radio");
+
+                    //創造 5個 欄位標籤並加入值
+                    const idTd = document.createElement('td');
+                    idTd.innerText = id;
+
+                    const manufactureTd = document.createElement('td');
+                    manufactureTd.innerText = manufacture.value;
+
+                    const categoryTd = document.createElement('td');
+                    categoryTd.innerText = category.value;
+
+                    const lowPriceTd = document.createElement('td');
+                    lowPriceTd.innerText = lowPrice.value
+
+                    const priceTd = document.createElement('td')
+                    priceTd.innerText = price.value;
+
+                    //刪除按鈕創建
+                    const deleteTd = document.createElement('td');
+                    const deleteButton = document.createElement('button');
+
+                    deleteButton.setAttribute('class', 'deleteButton');
+                    deleteButton.innerText = "刪除";
+
+                    //開始加入節點
+                    radioTd.appendChild(radioInput);
+                    deleteTd.appendChild(deleteButton);
+
+                    tr.appendChild(radioTd);
+                    tr.appendChild(idTd);
+                    tr.appendChild(manufactureTd);
+                    tr.appendChild(categoryTd);
+                    tr.appendChild(lowPriceTd);
+                    tr.appendChild(priceTd);
+                    tr.appendChild(deleteTd);
+
+                    resultTable.appendChild(tr);
+
+                }
+
+            })
+
+            /*事件委派:在table下掛監聽器，可監聽整個table中的元素*/
+
+            //按下刪除 button
+            resultTable.addEventListener('click', function (event) {
+                let target = event.target;
+                if (target.classList.contains('deleteButton')) {
+                    target.parentElement.parentElement.remove();
+                    updateId();
+                }
+
+            });
+
+            // radio按鈕 
+            resultTable.addEventListener('click', function (event) {
+                let target = event.target;
+                row = target.parentElement.parentElement;
+                if (target.classList.contains('radio')) {
+        
+                    manufacture.value = row.children[2].innerText;
+                    category.value = row.children[3].innerText;
+                    lowPrice.value = row.children[4].innerText;
+                    price.value = row.children[5].innerText;
+                }
+
+
+            });
+
+           
+            //按下修改button *底價售價要數字、按修改需跳沒點radio通知
+            const updateButton = document.getElementById('updateButton');
+
+            updateButton.addEventListener('click', function () {
+                 
+                //檢查是否有點選radio才可修改資料
+                 const radioCheck = document.querySelector('.radio');
+                if(radioCheck.checked===false){
+                    alert('請點擊要更改的項目');
+
+                }else{
+                //進行欄位修改
+                if (!(manufacture.value.trim())) {
+
+                    return alert("製造商不可空白 !!")
+
+                } else if (!(category.value.trim())) {
+
+                    return alert("類別不可空白 !!")
+
+                } else if (isNaN(Number(lowPrice.value))) {
+
+                    return alert("請在底價欄位中輸入數字!!")
+
+                } else if (isNaN(Number(price.value))) {
+
+                    return alert("請在售價欄位中輸入數字!!")
+
+                } else {
+
+                    row.children[2].innerText = manufacture.value;
+                    row.children[3].innerText = category.value;
+                    row.children[4].innerText = lowPrice.value;
+                    row.children[5].innerText = price.value;
+                }
+            }
+
+               
+            });
+
+
+            //按下清空 button !清空後續號需要重新計算 *欄位都清除
+            clearButton.addEventListener('click', function () {
+
+                //清空子節點
+                while (resultTable.children.length > 1) { //子節點index 1->表頭
+                    resultTable.removeChild(resultTable.lastChild)
+                }
+                id = 0; //序號重新計算
+
+                //欄位清空
+                manufacture.value = '';
+                category.value = '';
+                lowPrice.value='';
+                price.value ='';
+
+            })
+
+
+            function updateId() {
+                let serial = resultTable.getElementsByTagName('tr');
+
+                for (let i = 1; i <= serial.length - 1; i++) {//serial[0]為表頭
+                    serial[i].children[1].innerText = i; //抓到<th>[1]中的id
+                }
+                id = serial.length - 1; //目前刪完後剩幾列
+            }
         }
-      })
-
-      /*事件委派:在table下掛監聽器，可監聽整個table中的元素*/
-
-      //按下刪除 button
-      resultTable.addEventListener('click', function (event) {
-        let target = event.target;
-        if (target.classList.contains('deleteButton')) {
-          target.parentElement.parentElement.remove();
-          updateId();
-        }
-
-      });
-
-      // radio按鈕
-      resultTable.addEventListener('click', function (event) {
-        let target = event.target;
-        row = target.parentElement.parentElement;
-        if (target.classList.contains('radio')) {
-
-          document.getElementById('manufacture').value = row.children[2].innerText;
-          document.getElementById('category').value = row.children[3].innerText;
-          document.getElementById('lowPrice').value = row.children[4].innerText;
-          document.getElementById('price').value = row.children[5].innerText;
-        }
 
 
-      });
-
-      //按下修改button
-      const updateButton = document.getElementById('updateButton');
-
-      updateButton.addEventListener('click', function () {
-
-        if (manufacture.value === "" || category.value === "") {
-          alert("製造商與類別不可空白!");
-        } else {
-          row.children[2].innerText = manufacture.value;
-          row.children[3].innerText = category.value;
-          row.children[4].innerText = lowPrice.value;
-          row.children[5].innerText = price.value;
-        }
-      })
-
-
-      //按下清空 button !清空後續號需要重新計算
-      clearButton.addEventListener('click', function () {
-
-        //清空子節點
-        while (resultTable.children.length > 1) { //子節點index 1->表頭
-          resultTable.removeChild(resultTable.lastChild)
-        }
-        id = 0; //序號重新計算
-      })
-
-
-      function updateId() {
-        let serial = resultTable.getElementsByTagName('tr');
-
-        for (let i = 1; i <= serial.length - 1; i++) {//serial[0]為表頭
-          serial[i].children[1].innerText = i; //抓到<th>[1]中的id
-        }
-        id = serial.length - 1; //目前刪完後剩幾列
-      }
-    }
-
-
-  </script>
+    </script>
 </head>
 
 <body>
-  <table id="inputTable" border="1" style="border-collapse:collapse;">
-    <tr>
-      <th>製造商</th>
-      <th><input type="text" id="manufacture"></div>
-      </th>
-      <th>類別</th>
-      <th><input type="text" id="category"></th>
-    </tr>
+    <table id="inputTable" border="1" style="border-collapse:collapse;">
+        <tr>
+            <th>製造商</th>
+            <th><input type="text" id="manufacture"></div>
+            </th>
+            <th>類別</th>
+            <th><input type="text" id="category"></th>
+        </tr>
 
-    <tr>
-      <th>底價</th>
-      <th><input type="text" id="lowPrice"></th>
-      <th>售價</th>
-      <th><input type="text" id="price"></th>
-    </tr>
-    <tr>
-      <td colspan="4">
-        <button id="newButton">新增</button>
-        <button id="updateButton">修改</button>
-        <button id="clearButton">清空</button>
-      </td>
+        <tr>
+            <th>底價</th>
+            <th><input type="text" id="lowPrice"></th>
+            <th>售價</th>
+            <th><input type="text" id="price"></th>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <button id="newButton">新增</button>
+                <button id="updateButton">修改</button>
+                <button id="clearButton">清空</button>
+            </td>
 
-    </tr>
+        </tr>
 
-  </table>
+    </table>
 
-  <table id="resultTable" border="1" style="border-collapse:collapse;">
-    <tr>
-      <th></th>
-      <th>序號</th>
-      <th>製造商</th>
-      <th>類別</th>
-      <th>底價</th>
-      <th>售價</th>
-      <th></th>
-    </tr>
-  </table>
+    <table id="resultTable" border="1" style="border-collapse:collapse;">
+        <tr>
+            <th></th>
+            <th>序號</th>
+            <th>製造商</th>
+            <th>類別</th>
+            <th>底價</th>
+            <th>售價</th>
+            <th></th>
+        </tr>
+    </table>
 
 </body>
 

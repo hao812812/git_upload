@@ -6,22 +6,14 @@ var HashMap = function () {
         map[key] = value;
       },
       //全部key回傳
-      keys: function () {
-        const keySet = [];
-        for (let key in map) {
-          keySet.push(key);
-        }
-        return keySet;
+      keys: function () {//*object.keys -> 傳出陣列
+
+        return Object.keys(map);
       },
       //檢查key值
-      contains: function (key) {
+      contains: function (key) {//*array.includes -> 傳入陣列，判斷是否有包含某個元素
 
-        for (let k in map) {
-          if (k === key) {
-            return true;
-          }
-        }
-        return false;
+        return Object.keys(map).includes(key);
       },
       //回傳key的value
       get: function (key) {
