@@ -14,7 +14,7 @@
       const map = new HashMap();
       const putButton = document.getElementById('put');
       const clearButton = document.getElementById('clear');
-      const resultId = document.getElementById('result')//*改resultId抽出
+      const resultId = document.getElementById('result')
       const key = document.getElementById('key');
       const value = document.getElementById('value');
 
@@ -23,34 +23,34 @@
 
         let keyValue = key.value;
         let valueOfValue = value.value;
-        
+
         //判斷不能為空 且 key不重複
-        if (!(keyValue.trim())) { //*不為空跟重複輸入 分開判斷、trim篩選空白字串輸入、多寫return 跳出
-          
-          return alert("key值不可為空!!");
+        if (!(keyValue.trim())) {
 
-        } else if(map.contains(keyValue)){
-          
-          return alert("key值不可重複輸入!!");
+          alert('key值不可為空!!');
+          return;
 
-        } else {
+        } else if (map.contains(keyValue)) {
 
-          //put and get
-          map.put(keyValue, valueOfValue);
+          alert('key值不可重複輸入!!');
+          return;
 
-          const results = document.createElement('span');
-          results.innerHTML = `${keyValue} : ${map.get(keyValue)}<br>`
-          resultId.appendChild(results);//顯key:value
-          console.log(map)
         }
+
+        //put and get
+        map.put(keyValue, valueOfValue);
+
+        const results = document.createElement('span');
+        results.innerHTML = `${keyValue} : ${map.get(keyValue)}<br>`;
+        resultId.appendChild(results);//顯key:value
       })
 
       //按下CLEAR button
       clearButton.addEventListener('click', function () {
-  
-        map.clear(); 
-        key.value = "" ;//*輸入框清除
-        value.value = "" ;
+
+        map.clear();
+        key.value = '';
+        value.value = '';
 
         //清空子節點
         while (resultId.firstChild) {

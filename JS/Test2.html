@@ -26,25 +26,25 @@
 
                 //判斷製造商、類別不能為空 
                 if (!(manufacture.value.trim())) {
-
-                    return alert("製造商不可空白 !!")
+                    alert('製造商不可空白 !!');
+                    return;
 
                 } else if (!(category.value.trim())) {
-
-                    return alert("類別不可空白 !!")
+                    alert('類別不可空白 !!');
+                    return;
 
                 } else if (isNaN(Number(lowPrice.value))) {
-
-                    return alert("請在底價欄位中輸入數字!!")
+                    alert('請在底價欄位中輸入數字!!');
+                    return;
 
                 } else if (isNaN(Number(price.value))) {
-
-                    return alert("請在售價欄位中輸入數字!!")
+                    alert('請在售價欄位中輸入數字!!');
+                    return;
 
                 } else {
 
                     //新增資料
-            
+
                     id += 1;
 
                     //<tr> 、radio創建
@@ -52,9 +52,9 @@
                     const radioTd = document.createElement('td');
                     const radioInput = document.createElement('input');
                     //設定屬性
-                    radioInput.setAttribute('type', "radio");
-                    radioInput.setAttribute('name', "radio");
-                    radioInput.setAttribute('class', "radio");
+                    radioInput.setAttribute('type', 'radio');
+                    radioInput.setAttribute('name', 'radio');
+                    radioInput.setAttribute('class', 'radio');
 
                     //創造 5個 欄位標籤並加入值
                     const idTd = document.createElement('td');
@@ -67,7 +67,7 @@
                     categoryTd.innerText = category.value;
 
                     const lowPriceTd = document.createElement('td');
-                    lowPriceTd.innerText = lowPrice.value
+                    lowPriceTd.innerText = lowPrice.value;
 
                     const priceTd = document.createElement('td')
                     priceTd.innerText = price.value;
@@ -77,7 +77,7 @@
                     const deleteButton = document.createElement('button');
 
                     deleteButton.setAttribute('class', 'deleteButton');
-                    deleteButton.innerText = "刪除";
+                    deleteButton.innerText = '刪除';
 
                     //開始加入節點
                     radioTd.appendChild(radioInput);
@@ -114,44 +114,44 @@
                 let target = event.target;
                 row = target.parentElement.parentElement;
                 if (target.classList.contains('radio')) {
-        
+
                     manufacture.value = row.children[2].innerText;
                     category.value = row.children[3].innerText;
                     lowPrice.value = row.children[4].innerText;
                     price.value = row.children[5].innerText;
                 }
-
-
             });
 
-           
-            //按下修改button *底價售價要數字、按修改需跳沒點radio通知
+
+            //按下修改button 
             const updateButton = document.getElementById('updateButton');
 
             updateButton.addEventListener('click', function () {
-                 
-                //檢查是否有點選radio才可修改資料
-                 const radioCheck = document.querySelector('.radio');
-                if(radioCheck.checked===false){
+                //先檢查是否有radio被點選
+                const selectedRadio = document.querySelector('input[name="radio"]:checked');
+
+                //都沒有被點選的radio跳出alert
+                if (!selectedRadio) {
                     alert('請點擊要更改的項目');
+                    return;
+                }
 
-                }else{
-                //進行欄位修改
+
                 if (!(manufacture.value.trim())) {
-
-                    return alert("製造商不可空白 !!")
+                    alert('製造商不可空白 !!');
+                    return;
 
                 } else if (!(category.value.trim())) {
-
-                    return alert("類別不可空白 !!")
+                    alert('類別不可空白 !!');
+                    return;
 
                 } else if (isNaN(Number(lowPrice.value))) {
-
-                    return alert("請在底價欄位中輸入數字!!")
+                    alert('請在底價欄位中輸入數字!!');
+                    return;
 
                 } else if (isNaN(Number(price.value))) {
-
-                    return alert("請在售價欄位中輸入數字!!")
+                    alert('請在售價欄位中輸入數字!!');
+                    return;
 
                 } else {
 
@@ -162,8 +162,7 @@
                 }
             }
 
-               
-            });
+            );
 
 
             //按下清空 button !清空後續號需要重新計算 *欄位都清除
@@ -178,8 +177,8 @@
                 //欄位清空
                 manufacture.value = '';
                 category.value = '';
-                lowPrice.value='';
-                price.value ='';
+                lowPrice.value = '';
+                price.value = '';
 
             })
 
